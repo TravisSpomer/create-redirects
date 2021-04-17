@@ -1,0 +1,19 @@
+name: Create HTML redirects
+description: Creates HTML redirects (pages with meta http-equiv=refresh tags).
+author: TravisSpomer
+inputs:
+  output-path:
+    description: 'The root path containing your built static website files (including index.html), where redirects will be generated. (For example, "out".)'
+    required: true
+  routes:
+    description: 'The path to your routes.json file.'
+    required: true
+  canonical-url:
+    description: 'The canonical URL of the published website. (For example, "https://mysite.z22.web.core.windows.net".)'
+    required: true
+runs:
+  using: 'node12'
+  main: 'index.js'
+branding:
+  icon: refresh-cw
+  color: gray-dark
