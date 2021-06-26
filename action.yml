@@ -6,7 +6,7 @@ inputs:
     description: 'The root path containing your built static website files (including index.html), where redirects will be generated. (For example, "out".)'
     required: true
   routes:
-    description: 'The path to your routes.json file.'
+    description: 'The path to your staticwebapp.config.json (or routes.json) file.'
     required: true
   canonical-url:
     description: 'The canonical URL of the published website. (For example, "https://mysite.z22.web.core.windows.net".)'

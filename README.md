@@ -40,10 +40,10 @@ jobs:
         npm run build
         
     - name: Create redirects
-      uses: TravisSpomer/create-redirects@v1.0.0
+      uses: TravisSpomer/create-redirects@v1.1.0
       with:
         output-path: build
-        routes: routes.json
+        routes: staticwebapp.config.json
         canonical-url: https://mysite.z22.web.core.windows.net
 ```
 
@@ -53,25 +53,25 @@ jobs:
 
 *Required.* The location of your built site files, relative to the root of the repo.
 
-For example, for a [Next.js site exported with `next export`](https://nextjs.org/docs/advanced-features/static-html-export), the generated static files are in a folder called `"out"`.
+For example, for a [Next.js site exported with `next export`](https://nextjs.org/docs/advanced-features/static-html-export), the generated static files are in a folder called `"out"`. [SvelteKit with the static adapter](https://github.com/sveltejs/kit/tree/master/packages/adapter-static) uses `"build"`.
 
 ### `routes`
 
-*Required.* The location of your routes.json file, relative to the root of the repo. This can be any location and does *not* have to be inside `output-path`. The file doesn't actually have to be called `routes.json` but you probably should.
+*Required.* The location of your staticwebapp.config.json file, relative to the root of the repo. This can be any location and does *not* have to be inside `output-path`. The file doesn't actually have to be called `staticwebapp.config.json` but you probably should name it that or `routes.json`.
 
 ### `canonical-url`
 
 *Required.* The canonical URL of your published site.
 
-## `routes.json` format
+## `staticwebapp.config.json` format
 
-Specify the set of redirect files you want to create using a `routes.json` file. This file is in the same format as the one used in earlier preview versions of [Azure Static Web Apps](https://docs.microsoft.com/en-us/azure/static-web-apps/routes#example-route-file). Only the `routes` array in this file is used; the rest is ignored.
+Specify the set of redirect files you want to create using a `staticwebapp.config.json` file. This file is in the same format as the [Azure Static Web Apps configuration file](https://docs.microsoft.com/en-us/azure/static-web-apps/configuration). Only the `routes` array in this file is used; the rest is ignored.
 
 ```json
 {
   "routes": [
-    { "route": "/contact", "serve": "/email" },
-    { "route": "/about.html", "serve": "https://example.com/about" }
+    { "route": "/contact", "redirect": "/email" },
+    { "route": "/about.html", "redirect": "https://example.com/about" }
   ]
 }
 ```
@@ -79,7 +79,10 @@ Specify the set of redirect files you want to create using a `routes.json` file.
 Each object in the `routes` array has two properties:
 
 * `route`: The path that will redirect to another location, relative to the root of the website and starting with a slash.
-* `serve`: The path that `route` will redirect to. This can be a relative or absolute path, including on another server entirely.
+* `redirect`: The path that `route` will redirect to. This can be a relative or absolute path, including on another server entirely.
+	* This can also be named `serve` for compatibility with the schema used for a preview version of the Azure Static Web Apps service.
+
+Any object that does not contain both `route` and `redirect` (or `serve`) is ignored.
 
 ---
 
